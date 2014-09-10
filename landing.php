@@ -67,28 +67,17 @@ if(isset($_POST["code"]) && isset($_POST["lang"]) )
 
     if($rno === '1')
     {
-      $input = "CollegeofEngineeringChengannur 3 college techfest SUMMIT";
-      $output_expected = "30";
+      $input = file_get_contents('questions/r1_q.txt');
+      $output_expected = file_get_contents('questions/r1_a.txt');
     }
     else if($rno === '2')
     {
-       $input = "4
-                 4
-                 16 24 18 6
-                 3
-                 32 45 6
-                 3
-                 48 90 54
-                 4
-                 212 444 368 526";
-      $output_expected = "50
-                          56
-                          98
-                          320";
+       $input = file_get_contents('questions/r2_q.txt');
+      $output_expected = file_get_contents('questions/r2_a.txt');
     }
 
     $service_url = 'http://api.hackerearth.com/code/run/';
-    $client_id = ''; //your client secret id here
+    $client_id = 'a5f6f0bd36965c321b6f83640e2f06e7efe76695';
 
     $curl = curl_init($service_url);
 
@@ -222,8 +211,9 @@ else
 {
   $points_scored = 0;
   ?><script>
+          var data = <?php echo json_encode($output); ?>;
           bootbox.dialog({
-           message: "Your code has compiled successfully, but the output obtained did not match what we expected. Please try again. If you're sure your code is correct, contact the admin.",
+           message: "Your code has compiled successfully, but the output obtained did not match what we expected. Please try again. If you're sure your code is correct, contact the admin. This is the output we obtained: " + data,
            title: "Error!",
            buttons: {
               main: {
