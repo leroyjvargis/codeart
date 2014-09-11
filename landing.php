@@ -31,6 +31,10 @@
     <?php
       if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
       {
+        $username = $_SESSION['Username'];
+        $user = mysqli_query($link, "SELECT UserID FROM users WHERE Username = '".$username."'");
+        $userID = mysqli_fetch_array($user);
+        $userIDn = $userID['UserID'];
         ?>
           <p style = "color: #797979; float: right; padding-top:10px  ">Logged in as <?php echo $_SESSION['Username']; ?>
           <a href="logout.php">Logout</a></li></p>
@@ -59,25 +63,25 @@
 if(isset($_POST["code"]) && isset($_POST["lang"]) )
 {
     $code_data = $_POST["code"];
-    //$code_data = stripslashes($code_data);
+    //$code_data = stripslashes($code_data);    //needed in some versions of PHP
     $lang = $_POST["lang"];
     $rno = $_POST["rno"];
-    $d1 = strtotime("September 9");
+    $d1 = strtotime("September 9");   //competition start date
     $days = ceil(($d1-time())/60/60/24);
 
     if($rno === '1')
     {
-      $input = file_get_contents('questions/r1_q.txt');
-      $output_expected = file_get_contents('questions/r1_a.txt');
+      $input = file_get_contents('questions/r1_q.txt');   //path to question input
+      $output_expected = file_get_contents('questions/r1_a.txt'); //path to expected output
     }
     else if($rno === '2')
     {
-       $input = file_get_contents('questions/r2_q.txt');
-      $output_expected = file_get_contents('questions/r2_a.txt');
+       $input = file_get_contents('questions/r2_q.txt');    //path to question input
+      $output_expected = file_get_contents('questions/r2_a.txt'); //path to expected output
     }
 
     $service_url = 'http://api.hackerearth.com/code/run/';
-    $client_id = 'a5f6f0bd36965c321b6f83640e2f06e7efe76695';
+    $client_id = '';    //your client secret ID from API
 
     $curl = curl_init($service_url);
 
@@ -116,10 +120,7 @@ if(isset($_POST["code"]) && isset($_POST["lang"]) )
         $time_used = $decoded['run_status']['time_used'];
         $memory_used = $decoded['run_status']['memory_used'];
         $output = $decoded['run_status']['output'];
-        $username = $_SESSION['Username'];
-        $user = mysqli_query($link, "SELECT UserID FROM users WHERE Username = '".$username."'");
-        $userID = mysqli_fetch_array($user);
-        $userIDn = $userID['UserID'];
+
 
   $table = "round" . $rno;
 
@@ -257,66 +258,37 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
 </ul>
 <div id="myTabContent" class="tab-content">
    <div class="tab-pane fade in active" id="round1">
-        <br><br>
-        <p style = "font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; font-size:14px; color:#4d4d4d;">
-        Given a string S of length l, and a set S of n sample string(s).</p>
-        <p>We can reduce the string s using the set S by this way:
-        <p>&nbsp;&nbsp;&nbsp;Wherever S(i) appears as a consecutive substring of the string s, you can delete (or not) it.</p>
-        <p>&nbsp;After each deletion, you will get a new string S by joining the part to the left and to the right of the deleted substring.</p>
-        <br>
-        <p><b>Input:</b></p>
-        <p>&nbsp;&nbsp;The first line contains the string S</p>
-        <p>&nbsp;&nbsp;The second line contains the integer n</p>
-        <p>&nbsp;&nbsp;Within the last n lines, the i-th line contains the string S(i).</p>
-        <br>
-        <p><b>Output:</b></p>
-        <p>&nbsp;&nbsp;Output on a single line an integer which is the minimum length found.</p>
-
-        <p><b>Example:</b> <br><br>
-        Input:<br>
-        aaabccd<br>3<br>abc<br>ac<br>aaa
-        Output:<br>
-        2        </p>      
-
-        <?php roundnumber("1"); ?>
+        
+          <?php 
+          check_submissions("1");
+          echo file_get_contents('questions/r1.txt');   //path to question
+          roundnumber("1"); ?>
 
    </div>
 
    <div class="tab-pane fade" id="round2">
-   <br><br>
-      <p>Given N numbers, you need to tell the number of distinct factors of the product of these N numbers.</p>
-      <p><b>Input:</b> <br>
-      First line of input contains a single integer T, the number of test cases. <br>
-      Each test starts with a line containing a single integer N. <br>
-      The next line consists of N space separated integers (Ai). </p><br>
+   
+       <?php 
+          check_submissions("2");
+          echo file_get_contents('questions/r2.txt'); //path to question
+          roundnumber("2"); ?>
 
-      <p><b>Output:</b> <br>
-      For each test case, output on a separate line the total number of factors of the product of given numbers.</p>
-
-      <p><b>Example:</b> <br><br>
-      Input:<br>
-      3<br>3<br>3 5 7<br>3<br>2 4 6<br>2<br>5 5<br><br>
-      Output:<br>
-      8<br>10<br>3
-      </p>      
- 
-        <?php roundnumber("2"); ?>
 
    </div>
 
    <div class="tab-pane fade" id="round3">
-   <br><br>
-     <p>Round 3 will be active on September 20. Rounds 1 and 2 are now active.</p>
-
-      <?php// roundnumber("3"); ?>
+  <?php 
+          //check_submissions("3");
+          echo file_get_contents('questions/r3.txt');  //path to question
+          //roundnumber("1"); ?>
 
    </div>
 
    <div class="tab-pane fade" id="round4">
-   <br><br>
-      <p>Round 4 will be active on Sep 20, with round 3. Do crack rounds 1 and 2 in the meanwhile.</p>
-
-       <?php// roundnumber("4"); ?>
+  <?php 
+          //check_submissions("3");
+          echo file_get_contents('questions/r4.txt');  //path to question
+          //roundnumber("1"); ?>
 
    </div>
 </div>
@@ -348,9 +320,7 @@ else
 
 function roundnumber ($roundno) 
 {
-  
-
- if($roundno == '1')
+   if($roundno == '1')
       $roundn = "one";
    elseif ($roundno === '2')
       $roundn = "two";
@@ -358,6 +328,7 @@ function roundnumber ($roundno)
       $roundn = "three";
    else 
       $roundn = "four";
+   
 
  echo'    <div id="quotPanReg" style = "width:100%; height:auto;">
     <h3>code for round <span>'.$roundn.'</span></h3>
@@ -376,7 +347,43 @@ function roundnumber ($roundno)
   </div>'; 
 }
 
+function check_submissions($rndno)
+{ 
+  global $userIDn;
+  global $link;
+  $r_table = "round" . $rndno;
+  $check_submitted = mysqli_query($link, "SELECT * FROM `".$r_table."` WHERE UserID = '".$userIDn."'");
+  if(mysqli_num_rows($check_submitted))
+  {
+    $round_details = mysqli_fetch_array($check_submitted);
+        
+  ?>
+    <div id="ct_pan">
+    <p>You've already <span>successfully attempted</span> this round. Here is your performance. </p>
+    
+    <div id="pricing-table" class="clear">
+    
+     <div class="plan" style = "width: 180px;height: 140px">
+        <h3>Points<span><?php echo round($round_details['Points'], 2); ?></span></h3>
+     </div>
+    
+     <div class="plan" style = "width: 180px;height: 140px">
+        <h3>Language<span><?php echo ucfirst(strtolower($round_details['Language']));?></span></h3>
+     </div>
+ 
+     <div class="plan" style = "width: 180px;height: 140px">
+        <h3>Submissions<span><?php echo $round_details['Submissions'];?> </span></h3>
+     </div>
+    
+     <div class="plan" style = "width: 180px;height: 140px">
+        <h3 style = "letter-spacing: -1px; margin: -20px -20px 20px -10px;">Time Taken<span><?php echo round($round_details['TimeTaken'], 3);?></span></h3>
+     </div>  
+    </div>
+  </div>
 
+  <?php 
+  }
+}
 
 ?>
 </div>

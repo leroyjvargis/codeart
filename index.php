@@ -14,7 +14,7 @@
 <div id="head">
  <div id="head_cen">
   <div id="head_sup" class="head_height">
- 
+  <a href="http://www.cecsummit.org"><img src="images/logo_summit.png" alt="" class="ban_bg" /></a>
    <p class="search">
     
     <?php
@@ -105,7 +105,7 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
             $rank++;
         }  
 
-        $d1=strtotime("September 25");
+        $d1=strtotime("September 25"); //end date of competition
         $date=ceil(($d1-time())/60/60/24);
 
   
@@ -138,22 +138,22 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
 
      <ul id="infoPan">
     <li>
-     <h3><span>round</span> one <img src="images/icon1.png" alt="" /></h3>
+     <h3><span>round</span> one <img src="images/active.png" alt="" /></h3>
      <p>This round tests your aptitude in programming. Programmer’s freedom is maximum as any programming language is allowed for this round. </p>
      <p class="descrip">Points will be based on the time of submission and the output as well. If you believe that you have a little interest in programming then you should try this out. Believe us! This will awaken the programmer in you.</p>
     </li>
     <li>
-     <h3><span>round</span> two <img src="images/icon2.png" alt="" /></h3>
+     <h3><span>round</span> two <img src="images/active.png" alt="" /></h3>
      <p>Round two will be more difficult. Cook the code to produce delicious outputs. Rules are the same as round 1 with maximum freedom of language. </p>
      <p class="descrip">you will easily clear this with some logical thinking and decent programming skills. You are now heading through the middle of Code-Art. Points in this round is also based on the output and the time of submission. Just keep in mind that Coding is in fact an ART. Things getting a bit serious …eh??</p>
     </li>
     <li>
-     <h3><span>round</span> three <img src="images/icon3.png" alt="" /></h3>
+     <h3><span>round</span> three </h3>
      <p>This round enables you to use programming skills in you to the maximum. With the level counting up, the difficulty too increases</p>
      <p class="descrip">You are now heading to the final parts of Code Art. You are restricted to use only C and C++ to cook code. The points will be based on output, time for execution, memory usage and efficiency. Now, you will be knocking door to the final round of Code Art.</p>
     </li>
     <li>
-     <h3><span>round</span> four <img src="images/icon1.png" alt="" /></h3>
+     <h3><span>round</span> four </h3>
      <p>The final step for your success, the final round of Code Art. This round will test your logic, programming skills, efficiency and much more.</p>
      <p class="descrip">Difficulty level will be comparatively high, but still simple, interesting and fun filled. This round helps you to increase your thinking capability, aptitude and creativity. This can be a turning point for you and a crucial one. Again, you are restricted to use only C and C++ for solving the problem.</p>
     </li>
