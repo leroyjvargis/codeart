@@ -105,7 +105,7 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
             $rank++;
         }  
 
-        $d1=strtotime("September 25");
+        $d1=strtotime("September 25");    //end date of comeptition
         $date=ceil(($d1-time())/60/60/24);
 
   

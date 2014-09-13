@@ -77,3 +77,17 @@
 ?>
 
 </table>	
+</div>
+</div>
+
+
+<div id="foot">
+ <div id="foot_cen">
+ <h6><a href="index.php">Code-Art</a></h6>
+ 
+    <p>© 2014. Designed by CEC WebTeam <br>
+    Contact the admin at <?php echo $contact;?></p>
+ </div>
+</div>
+</body>
+</html>

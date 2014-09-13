@@ -17,7 +17,5 @@ function log_data($user, $action, $message = "nil", $details = "nil")
 	mysqli_query($link, "INSERT INTO logs (User, Action, Message, Details)
            VALUES ('$user', '$action', '$message', '$details')");
 	
-
-
 }
 ?>

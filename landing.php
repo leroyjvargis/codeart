@@ -63,16 +63,16 @@
 if(isset($_POST["code"]) && isset($_POST["lang"]) )
 {
     $code_data = $_POST["code"];
-    //$code_data = stripslashes($code_data);
+    //$code_data = stripslashes($code_data);  //needed in some versions
     $lang = $_POST["lang"];
     $rno = $_POST["rno"];
-    $d1 = strtotime("September 12");
+    $d1 = strtotime("September 12");    //start date of comeptition
     $days = ceil(($d1-time())/60/60/24);
 
     if($rno === '1')
     {
-      $input = file_get_contents('questions/r1_q.txt');
-      $output_expected = file_get_contents('questions/r1_a.txt');
+      $input = file_get_contents('questions/r1_q.txt');   //path to question input
+      $output_expected = file_get_contents('questions/r1_a.txt');  //path to expected output
     }
     else if($rno === '2')
     {
@@ -81,7 +81,7 @@ if(isset($_POST["code"]) && isset($_POST["lang"]) )
     }
 
     $service_url = 'http://api.hackerearth.com/code/run/';
-    $client_id = '';
+    $client_id = '';    //you client secret ID
 
     $curl = curl_init($service_url);
 

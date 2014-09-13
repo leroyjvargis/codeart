@@ -48,7 +48,7 @@ if(!empty($_POST['username']) && !empty($_POST['password'])  && !empty($_POST['e
      }
      else
      {
-        log_data($username, "Registered");
+        log_data($username, "Registered"); //log registration
         $registerquery = mysqli_query($link, "INSERT INTO users (Username, Password, EmailAddress, College, Phone) VALUES('".$username."', '".$password."', '".$email."', '".$college."', '".$phone."')");
         if($registerquery)
         {
