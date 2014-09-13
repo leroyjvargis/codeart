@@ -105,7 +105,7 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
             $rank++;
         }  
 
-        $d1=strtotime("September 25"); //end date of competition
+        $d1=strtotime("September 25");
         $date=ceil(($d1-time())/60/60/24);
 
   
@@ -188,6 +188,7 @@ elseif(!empty($_POST['username']) && !empty($_POST['password']))
       
         <meta http-equiv="refresh" content="2;index.php">
       <?php
+      log_data($username, "Logged in");
     }
     else
     {
@@ -231,7 +232,8 @@ else
  <div id="foot_cen">
  <h6><a href="index.php">CODE-ART</a></h6>
  
-    <p>© 2014. Designed by CEC WebTeam</p>
+    <p>© 2014. Designed by CEC WebTeam <br>
+    Contact the admin at <?php echo $contact;?></p>
  </div>
 </div>
 </body>

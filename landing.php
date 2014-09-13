@@ -63,25 +63,25 @@
 if(isset($_POST["code"]) && isset($_POST["lang"]) )
 {
     $code_data = $_POST["code"];
-    //$code_data = stripslashes($code_data);    //needed in some versions of PHP
+    //$code_data = stripslashes($code_data);
     $lang = $_POST["lang"];
     $rno = $_POST["rno"];
-    $d1 = strtotime("September 9");   //competition start date
+    $d1 = strtotime("September 12");
     $days = ceil(($d1-time())/60/60/24);
 
     if($rno === '1')
     {
-      $input = file_get_contents('questions/r1_q.txt');   //path to question input
-      $output_expected = file_get_contents('questions/r1_a.txt'); //path to expected output
+      $input = file_get_contents('questions/r1_q.txt');
+      $output_expected = file_get_contents('questions/r1_a.txt');
     }
     else if($rno === '2')
     {
-       $input = file_get_contents('questions/r2_q.txt');    //path to question input
-      $output_expected = file_get_contents('questions/r2_a.txt'); //path to expected output
+       $input = file_get_contents('questions/r2_q.txt');
+      $output_expected = file_get_contents('questions/r2_a.txt');
     }
 
     $service_url = 'http://api.hackerearth.com/code/run/';
-    $client_id = '';    //your client secret ID from API
+    $client_id = '';
 
     $curl = curl_init($service_url);
 
@@ -131,6 +131,8 @@ $output_expected = preg_replace('/\s+/', '', $output_expected);
 if($output == $output_expected)
   
 {
+  $details = $lang . " " . $time_used . " " . $memory_used . " " . $output;
+  log_data($username, "Correct output", $code_data, $details);
   $points_scored = 30 - ($time_used * 10) - abs($days);
   $checkuser = mysqli_query($link, "SELECT * FROM `".$table."` WHERE UserID = '".$userIDn."'");
   if(!mysqli_num_rows($checkuser))
@@ -211,6 +213,7 @@ if($output == $output_expected)
 else
 {
   $points_scored = 0;
+  log_data($username, "Wrong output", $code_data);
   ?><script>
           var data = <?php echo json_encode($output); ?>;
           bootbox.dialog({
@@ -227,6 +230,7 @@ else
 }
   else
    {    
+          log_data($username, "Compilation error", $code_data);
           ?><script>
           var data = <?php echo json_encode($run_status); ?>;
           bootbox.dialog({
@@ -261,7 +265,7 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
         
           <?php 
           check_submissions("1");
-          echo file_get_contents('questions/r1.txt');   //path to question
+          echo file_get_contents('questions/r1.txt');
           roundnumber("1"); ?>
 
    </div>
@@ -270,7 +274,7 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
    
        <?php 
           check_submissions("2");
-          echo file_get_contents('questions/r2.txt'); //path to question
+          echo file_get_contents('questions/r2.txt');
           roundnumber("2"); ?>
 
 
@@ -279,7 +283,7 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
    <div class="tab-pane fade" id="round3">
   <?php 
           //check_submissions("3");
-          echo file_get_contents('questions/r3.txt');  //path to question
+          echo file_get_contents('questions/r3.txt');
           //roundnumber("1"); ?>
 
    </div>
@@ -287,7 +291,7 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
    <div class="tab-pane fade" id="round4">
   <?php 
           //check_submissions("3");
-          echo file_get_contents('questions/r4.txt');  //path to question
+          echo file_get_contents('questions/r4.txt');
           //roundnumber("1"); ?>
 
    </div>
@@ -395,7 +399,8 @@ function check_submissions($rndno)
  <div id="foot_cen">
  <h6><a href="index.php">Code-Art</a></h6>
  
-    <p>© 2014. Designed by CEC WebTeam</p>
+    <p>© 2014. Designed by CEC WebTeam <br>
+    Contact the admin at <?php echo $contact;?></p>
  </div>
 </div>
 </body>
