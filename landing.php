@@ -66,20 +66,36 @@ if(isset($_POST["code"]) && isset($_POST["lang"]) )
     //$code_data = stripslashes($code_data);  //needed in some versions
     $lang = $_POST["lang"];
     $rno = $_POST["rno"];
-    $d1 = strtotime("September 12");    //start date of comeptition
-    $days = ceil(($d1-time())/60/60/24);
-
+    log_data($username, "Code Submission", $code_data, $lang . $rno);
+  
     if($rno === '1')
     {
-      $input = file_get_contents('questions/r1_q.txt');   //path to question input
-      $output_expected = file_get_contents('questions/r1_a.txt');  //path to expected output
+      $input = file_get_contents('questions/r1_q.txt');
+      $output_expected = file_get_contents('questions/r1_a.txt');
+      $d1 = strtotime("September 12");    //start date of round 1
+      $days = ceil(($d1-time())/60/60/24);
     }
     else if($rno === '2')
     {
-       $input = file_get_contents('questions/r2_q.txt');
+      $input = file_get_contents('questions/r2_q.txt');
       $output_expected = file_get_contents('questions/r2_a.txt');
+      $d1 = strtotime("September 12");    //start date of round 2
+      $days = ceil(($d1-time())/60/60/24);
     }
-
+     else if($rno === '3')
+    {
+      $input = file_get_contents('questions/r3_q.txt');
+      $output_expected = file_get_contents('questions/r3_a.txt');
+      $d1 = strtotime("September 19");    //start date of round 3
+      $days = ceil(($d1-time())/60/60/24);
+    }
+     else if($rno === '4')
+    {
+      $input = file_get_contents('questions/r4_q.txt');
+      $output_expected = file_get_contents('questions/r4_a.txt');
+      $d1 = strtotime("September 19");    //start date of round 4
+      $days = ceil(($d1-time())/60/60/24);
+    }
     $service_url = 'http://api.hackerearth.com/code/run/';
     $client_id = '';    //you client secret ID
 
@@ -131,9 +147,22 @@ $output_expected = preg_replace('/\s+/', '', $output_expected);
 if($output == $output_expected)
   
 {
-  $details = $lang . " " . $time_used . " " . $memory_used . " " . $output;
+    $details = $lang . " " . $time_used . " " . $memory_used . " " . $output;
   log_data($username, "Correct output", $code_data, $details);
-  $points_scored = 30 - ($time_used * 10) - abs($days);
+  if($rno === '1' || $rno === '2')
+    $points_scored = 30 - ($time_used * 10) - abs($days);
+  else
+  {
+    $mem_points = '0';
+    if($memory_used > '1000' && $memory_used < '10000')
+      $mem_points = 3;
+    else if ($memory_used > '10000')
+      $mem_points = 6;
+    else if ($memory_used > '100')
+      $mem_points = 1;
+    $points_scored = 30 - ($time_used * 10) - $mem_points - abs($days);
+  }
+
   $checkuser = mysqli_query($link, "SELECT * FROM `".$table."` WHERE UserID = '".$userIDn."'");
   if(!mysqli_num_rows($checkuser))
     {
@@ -228,6 +257,24 @@ else
 </script><?php
 }
 }
+
+else if($run_status == null)
+  {
+          ?><script>
+          bootbox.dialog({
+          message: "We are experiencing difficulties at the moment. Please bear with us, while we rectify the problem. We have saved your code in the meanwhile, to be evaluated at a later time. Thank you for your patience.",
+          title: "Fatal Error",
+          buttons: {
+              main: {
+              label: "OK",
+              className: "btn-danger"    }
+          }
+        });
+          </script><?php    
+          mysqli_query($link, "INSERT INTO error_data (UserID, Language, Code, Round)
+           VALUES ('$userIDn', '$lang', '$code_data', '$rno')");
+          log_data($username, "API trouble", $code_data);
+  }
   else
    {    
           log_data($username, "Compilation error", $code_data);
@@ -282,17 +329,17 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
 
    <div class="tab-pane fade" id="round3">
   <?php 
-          //check_submissions("3");
+          check_submissions("3");
           echo file_get_contents('questions/r3.txt');
-          //roundnumber("1"); ?>
+          roundnumber("3"); ?>
 
    </div>
 
    <div class="tab-pane fade" id="round4">
   <?php 
-          //check_submissions("3");
+          check_submissions("4");
           echo file_get_contents('questions/r4.txt');
-          //roundnumber("1"); ?>
+          roundnumber("4"); ?>
 
    </div>
 </div>

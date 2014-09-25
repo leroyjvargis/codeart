@@ -1,7 +1,7 @@
 <?php
 session_start();
  
-$dbhost = ""; 
+$dbhost = ""; 	//DB credentials
 $dbname = "";
 $dbuser = "";
 $dbpass = ""; 
